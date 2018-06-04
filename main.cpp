@@ -2,7 +2,19 @@
 #include <cstring>
 
 using namespace std;
+void addEdge();
+void addVertex();
+void removeEdge();
+void removeVertex();
+void print();
+void find();
 
+struct vertex(){
+    char* name;
+    
+};
+Graph::Graph(int V){
+}
 int main(){
     while(true){
         cout << endl;
@@ -11,7 +23,7 @@ int main(){
         cout << "Enter re to remove an edge." << endl;
         cout << "Enter av to add a vertex." << endl;
         cout << "Enter rv to remove a vertex." << endl;
-        cout << "Enter f to find." << endl;
+        cout << "Enter f to find shortest path." << endl;
         cout << "> ";
         char* input = new char[100];
         cin.getline(input, 100);
@@ -32,4 +44,12 @@ int main(){
             cout<< "Not a valid input."<< endl;
         }
     }
+}
+
+void addEdge(){
+
+}
+
+void addVertext(){
+
 }
