@@ -9,11 +9,12 @@ void removeVertex();
 void print();
 void find();
 
-struct vertex(){
+struct vertex::(){
     char* name;
     
 };
 Graph::Graph(int V){
+
 }
 int main(){
     while(true){
@@ -50,6 +51,6 @@ void addEdge(){
 
 }
 
-void addVertext(){
+void addVertex(){
 
 }
