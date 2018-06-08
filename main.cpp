@@ -65,8 +65,8 @@ int main() {
       addEdge(AM, first, second, weight);
     } else if (strcmp(input, "re") == 0) {
       //gets the vertexes that the edge is supposed to be on
-      char * first;
-      char * second;
+      char * first = new char();
+      char * second = new char();
       cout << "Input the name of the first vertex (where the edge originates):" << endl;
       cout << "< ";
       cin.getline(first, 20);
