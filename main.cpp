@@ -297,8 +297,8 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
       for (vector < vertex * > ::iterator it = newPath.begin(); it != newPath.end(); ++it) {
         cout << ( * it) -> name << " ";
       }
-      //cout << endl;
-      //cout << "Total weight: " << minimum << endl;
+     
+      cout << "\nTotal weight: " << minimum << endl;
       return;
     }
   }
@@ -306,7 +306,8 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
 
 void print(vector < vertex * > v) {
 	//prints a row of the things in the vertex
-  for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
+  cout << " ";
+	for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
     cout << "      " << ( * it) -> name;
   }
   //checks if it is connected and print if it is or not
@@ -327,7 +328,7 @@ void print(vector < vertex * > v) {
           count++;
           if (( * iter) -> name == ( * ite) -> name) {
             //print out 1 if there is an edge
-            cout << "      1";
+            cout << "      " << length.at(count-1);
             found = true;
           }
         }
