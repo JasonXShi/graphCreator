@@ -3,7 +3,7 @@
  *	Written by Jason Shi
  *	This program allows the user to create a Graph using an adjacency matrix 
  *	Dijistra's Algorithm is used to find the shortest distance between two points in the graph.
- *	06/07/2018
+ *	06/08/2018 Final Version
  */
 
 
