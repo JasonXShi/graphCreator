@@ -7,7 +7,11 @@
  */
 
 
-#include < iostream > #include < cstring > #include < vector > #include < limits > #include < algorithm >
+#include <iostream> 
+#include <cstring> 
+#include <vector> 
+#include <limits> 
+#include <algorithm>
   using namespace std;
 //make a vertex struct which contains a vector of the edges (pointers to other vertexes), a name, and the weights of the edges (in order)
 struct vertex {
@@ -77,7 +81,7 @@ int main() {
       cout << "Input the name of the vertex:";
       cin.getline(name, 20);
       vertex * temp = new vertex();
-      temp - > name = name;
+      temp -> name = name;
       AM.push_back(temp);
     } else if (strcmp(input, "rv") == 0) {
       //gets the name of the vertex to be removed
@@ -103,9 +107,9 @@ int main() {
       vertex * secondV = NULL;
 
       for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
-        if (strcmp(( * it) - > name, first) == 0) {
+        if (strcmp(( * it) -> name, first) == 0) {
           firstV = * it;
-        } else if (strcmp(( * it) - > name, second) == 0) {
+        } else if (strcmp(( * it) -> name, second) == 0) {
           secondV = * it;
         }
       }
@@ -128,16 +132,16 @@ void addEdge(vector < vertex * > AM, char * first, char * second, int weight) {
   vertex * firstV = NULL;
   vertex * secondV = NULL;
   for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
-    if (strcmp(( * it) - > name, first) == 0) {
+    if (strcmp(( * it) -> name, first) == 0) {
       firstV = * it;
-    } else if (strcmp(( * it) - > name, second) == 0) {
+    } else if (strcmp(( * it) -> name, second) == 0) {
       secondV = * it;
     }
   }
   //add the edge to the vector in the first vertex and add the weight
   if (firstV != NULL && secondV != NULL) {
-    firstV - > edges.push_back(secondV);
-    firstV - > weight.push_back(weight);
+    firstV -> edges.push_back(secondV);
+    firstV -> weight.push_back(weight);
 
   }
 }
@@ -147,7 +151,7 @@ void removeVertex(vector < vertex * > & AM, char * name) {
   //finds the vertex with name and deletes the vertex
 
   for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
-    if (strcmp(( * it) - > name, name) == 0) {
+    if (strcmp(( * it) -> name, name) == 0) {
       cout << "vertex found";
       temp = * it;
       AM.erase(it);
@@ -155,8 +159,8 @@ void removeVertex(vector < vertex * > & AM, char * name) {
     }
     //deletes any edges to temp
     for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
-      vector < vertex * > vEdges = ( * it) - > edges;
-      vector < int > vWeight = ( * it) - > weight;
+      vector < vertex * > vEdges = ( * it) -> edges;
+      vector < int > vWeight = ( * it) -> weight;
       int count = 0;
       //this is pretty much removeEdge method of removing edges
       for (vector < vertex * > ::iterator it2 = vEdges.begin(); it2 != vEdges.end(); ++it2) {
@@ -164,8 +168,8 @@ void removeVertex(vector < vertex * > & AM, char * name) {
         if (( * it2) == temp) {
           vEdges.erase(it2);
           vWeight.erase(vWeight.begin() + (count - 1));
-          ( * it) - > edges = vEdges;
-          ( * it) - > weight = vWeight;
+          ( * it) -> edges = vEdges;
+          ( * it) -> weight = vWeight;
           break;
         }
       }
@@ -178,25 +182,25 @@ void removeEdge(vector < vertex * > AM, char * first, char * second) {
     vertex * firstV = NULL;
     vertex * secondV = NULL;
     for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
-      if (strcmp(( * it) - > name, first) == 0) {
+      if (strcmp(( * it) -> name, first) == 0) {
         firstV = * it;
-      } else if (strcmp(( * it) - > name, second) == 0) {
+      } else if (strcmp(( * it) -> name, second) == 0) {
         secondV = * it;
       }
     }
     //go through edges of first
     //delete edge
     //delete weight from weights
-    vector < vertex * > fEdges = firstV - > edges;
-    vector < int > fWeights = firstV - > weight;
+    vector < vertex * > fEdges = firstV -> edges;
+    vector < int > fWeights = firstV -> weight;
     int count = 0;
     for (vector < vertex * > ::iterator it = fEdges.begin(); it != fEdges.end(); ++it) {
       count++;
       if (( * it) == secondV) {
         fEdges.erase(it);
         fWeights.erase(fWeights.begin() + (count - 1));
-        firstV - > edges = fEdges;
-        firstV - > weight = fWeights;
+        firstV -> edges = fEdges;
+        firstV -> weight = fWeights;
         break;
       }
     }
@@ -251,7 +255,7 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
       count++;
       current = ( * it);
       currentLength = length.at(count - 1);
-      con = current - > edges;
+      con = current -> edges;
       count2 = 0;
       if (!con.empty()) { //if there are more vertexes, check them
         finished = false;
@@ -260,8 +264,8 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
           count2++;
           if (!contains(sptSet, ( * it2))) {
             //adds to the SPTset
-            if ((currentLength + current - > weight.at(count2 - 1)) < minimum) {
-              minimum = currentLength + current - > weight.at(count2 - 1);
+            if ((currentLength + current -> weight.at(count2 - 1)) < minimum) {
+              minimum = currentLength + current -> weight.at(count2 - 1);
               next = ( * it2);
               previous = current;
               found = true;
@@ -291,7 +295,7 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
     if (next == end) { //since the last node is found, then print out the route and length to it!
       cout << "\nShortest path: ";
       for (vector < vertex * > ::iterator it = newPath.begin(); it != newPath.end(); ++it) {
-        cout << ( * it) - > name << " ";
+        cout << ( * it) -> name << " ";
       }
       //cout << endl;
       //cout << "Total weight: " << minimum << endl;
@@ -303,14 +307,14 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
 void print(vector < vertex * > v) {
 	//prints a row of the things in the vertex
   for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
-    cout << "      " << ( * it) - > name;
+    cout << "      " << ( * it) -> name;
   }
   //checks if it is connected and print if it is or not
   for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
     cout << endl;
-    cout << ( * it) - > name;
-    vector < vertex * > connect = ( * it) - > edges;
-    vector < int > length = ( * it) - > weight;
+    cout << ( * it) -> name;
+    vector < vertex * > connect = ( * it) -> edges;
+    vector < int > length = ( * it) -> weight;
     //see if connected and print or not
     for (vector < vertex * > ::iterator ite = v.begin(); ite != v.end(); ++ite) {
       int count = 0;
@@ -321,7 +325,7 @@ void print(vector < vertex * > v) {
       } else {
         for (vector < vertex * > ::iterator iter = connect.begin(); iter != connect.end(); ++iter) {
           count++;
-          if (( * iter) - > name == ( * ite) - > name) {
+          if (( * iter) -> name == ( * ite) -> name) {
             //print out 1 if there is an edge
             cout << "      1";
             found = true;
