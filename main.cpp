@@ -1,56 +1,338 @@
-#include <iostream>
-#include <cstring>
+/*
+ *	Graph Creator
+ *	Written by Jason Shi
+ *	This program allows the user to create a Graph using an adjacency matrix 
+ *	Dijistra's Algorithm is used to find the shortest distance between two points in the graph.
+ *	06/07/2018
+ */
 
-using namespace std;
-void addEdge();
-void addVertex();
-void removeEdge();
-void removeVertex();
-void print();
-void find();
 
-struct vertex::(){
-    char* name;
-    
+#include < iostream > #include < cstring > #include < vector > #include < limits > #include < algorithm >
+  using namespace std;
+//make a vertex struct which contains a vector of the edges (pointers to other vertexes), a name, and the weights of the edges (in order)
+struct vertex {
+  char * name;
+  vector < vertex * > edges;
+  vector < int > weight;
 };
-Graph::Graph(int V){
+//define functions used
+void addEdge(vector < vertex * > AM, char * first, char * second, int weight);
+void removeEdge(vector < vertex * > AM, char * first, char * second);
+void removeVertex(vector < vertex * > & AM, char * name);
+void print(vector < vertex * > AM);
+void find(vector < vertex * > AM, vertex * first, vertex * second);
 
-}
-int main(){
-    while(true){
-        cout << endl;
-        cout << "Enter p to print." << endl;
-        cout << "Enter ae to add an edge." << endl;
-        cout << "Enter re to remove an edge." << endl;
-        cout << "Enter av to add a vertex." << endl;
-        cout << "Enter rv to remove a vertex." << endl;
-        cout << "Enter f to find shortest path." << endl;
-        cout << "> ";
-        char* input = new char[100];
-        cin.getline(input, 100);
-        if(strcmp(input, "p")==0){
-         
-        }else if(strcmp(input, "ae")==0){
+int main() {
+  //creates adjacency matrix
+  vector < vertex * > AM;
+  while (true) {
+    //print out commands
+    cout << endl;
+    cout << "Enter p to print." << endl;
+    cout << "Enter ae to add an edge." << endl;
+    cout << "Enter re to remove an edge." << endl;
+    cout << "Enter av to add a vertex." << endl;
+    cout << "Enter rv to remove a vertex." << endl;
+    cout << "Enter f to find shortest path." << endl;
+    cout << "> ";
+    //gets input for command
+    char * input = new char[100];
+    cin.getline(input, 100);
+    if (strcmp(input, "p") == 0) {
+      //calls print function
+      print(AM);
+    } else if (strcmp(input, "ae") == 0) {
+      //gets the vertexes and weight
+      char * first = new char();
+      char * second = new char();
+      int weight;
+      cout << "Enter the first vertex (where the edge originates): ";
+      cout << "> ";
+      cin.getline(first, 20);;
+      cout << "\nEnter the second vertex: ";
+      cout << "> ";
+      cin.getline(second, 20);
 
-        }else if(strcmp(input, "re")==0){
-        
-        }else if(strcmp(input, "av")==0){
-        
-        }else if(strcmp(input, "rv")==0){
-        
-        }else if(strcmp(input, "f")==0){
-        
-        }else{
-            cout << endl;
-            cout<< "Not a valid input."<< endl;
+      cout << "\nEnter the weight: ";
+      cout << "> ";
+      cin >> weight;
+      cin.get();
+      //calls the funcion to add the edge
+      addEdge(AM, first, second, weight);
+    } else if (strcmp(input, "re") == 0) {
+      //gets the vertexes that the edge is supposed to be on
+      char * first;
+      char * second;
+      cout << "Input the name of the first vertex (where the edge originates):" << endl;
+      cout << "< ";
+      cin.getline(first, 20);
+      cout << "Input the name of the second vertex:" << endl;
+      cout << "< ";
+      cin.getline(second, 20);
+      //calls the function to remove the edge
+      removeEdge(AM, first, second);
+    } else if (strcmp(input, "av") == 0) {
+      //adds the vertex with a name into the vector of all the vertexes
+      char * name = new char();
+      cout << "Input the name of the vertex:";
+      cin.getline(name, 20);
+      vertex * temp = new vertex();
+      temp - > name = name;
+      AM.push_back(temp);
+    } else if (strcmp(input, "rv") == 0) {
+      //gets the name of the vertex to be removed
+      char * name = new char();
+      cout << "\nEnter the name of the vertex: ";
+      cout << "> ";
+      cin.getline(name, 20);
+      //calls the function to remove the vertex
+      removeVertex(AM, name);
+    } else if (strcmp(input, "f") == 0) {
+      //gets the vertexes where the path should be found between
+      char * first = new char();
+      char * second = new char();
+      cout << "Input the starting vertex name: " << endl;
+      cout << "> ";
+      cin.getline(first, 20);
+      cout << "Input the second vertex name: " << endl;
+      cout << "> ";
+      cin.getline(second, 20);
+      //checks that both vertexes exist
+      //then calls the function if they do
+      vertex * firstV = NULL;
+      vertex * secondV = NULL;
+
+      for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
+        if (strcmp(( * it) - > name, first) == 0) {
+          firstV = * it;
+        } else if (strcmp(( * it) - > name, second) == 0) {
+          secondV = * it;
         }
+      }
+      if (firstV != NULL && secondV != NULL) {
+
+        find(AM, firstV, secondV);
+      } else {
+
+        cout << "\nSome vertexes don't exist. " << endl;
+      }
+    } else {
+      cout << endl;
+      cout << "Not a valid input." << endl;
     }
+  }
 }
 
-void addEdge(){
+void addEdge(vector < vertex * > AM, char * first, char * second, int weight) {
+  //check if the vertexes exist
+  vertex * firstV = NULL;
+  vertex * secondV = NULL;
+  for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
+    if (strcmp(( * it) - > name, first) == 0) {
+      firstV = * it;
+    } else if (strcmp(( * it) - > name, second) == 0) {
+      secondV = * it;
+    }
+  }
+  //add the edge to the vector in the first vertex and add the weight
+  if (firstV != NULL && secondV != NULL) {
+    firstV - > edges.push_back(secondV);
+    firstV - > weight.push_back(weight);
 
+  }
 }
 
-void addVertex(){
+void removeVertex(vector < vertex * > & AM, char * name) {
+  vertex * temp = NULL;
+  //finds the vertex with name and deletes the vertex
+
+  for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
+    if (strcmp(( * it) - > name, name) == 0) {
+      cout << "vertex found";
+      temp = * it;
+      AM.erase(it);
+      break;
+    }
+    //deletes any edges to temp
+    for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
+      vector < vertex * > vEdges = ( * it) - > edges;
+      vector < int > vWeight = ( * it) - > weight;
+      int count = 0;
+      //this is pretty much removeEdge method of removing edges
+      for (vector < vertex * > ::iterator it2 = vEdges.begin(); it2 != vEdges.end(); ++it2) {
+        count++;
+        if (( * it2) == temp) {
+          vEdges.erase(it2);
+          vWeight.erase(vWeight.begin() + (count - 1));
+          ( * it) - > edges = vEdges;
+          ( * it) - > weight = vWeight;
+          break;
+        }
+      }
+    }
+
+  }
+}
+void removeEdge(vector < vertex * > AM, char * first, char * second) {
+    //makes sure that the vertexes exist and find the vertex pointers corresponding to the names
+    vertex * firstV = NULL;
+    vertex * secondV = NULL;
+    for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
+      if (strcmp(( * it) - > name, first) == 0) {
+        firstV = * it;
+      } else if (strcmp(( * it) - > name, second) == 0) {
+        secondV = * it;
+      }
+    }
+    //go through edges of first
+    //delete edge
+    //delete weight from weights
+    vector < vertex * > fEdges = firstV - > edges;
+    vector < int > fWeights = firstV - > weight;
+    int count = 0;
+    for (vector < vertex * > ::iterator it = fEdges.begin(); it != fEdges.end(); ++it) {
+      count++;
+      if (( * it) == secondV) {
+        fEdges.erase(it);
+        fWeights.erase(fWeights.begin() + (count - 1));
+        firstV - > edges = fEdges;
+        firstV - > weight = fWeights;
+        break;
+      }
+    }
+
+  }
+  //method to check for containment of a vertex in a vector of vertexes
+bool contains(vector < vertex * > AM, vertex * ver) {
+  if (std::find(AM.begin(), AM.end(), ver) != AM.end()) {
+    return true;
+  }
+  return false;
+}
+
+void find(vector < vertex * > AM, vertex * start, vertex * end) {
+  //create vectors that are needed
+  //1. storing the path
+  //2. storing the temp path
+  //3. sptSet- shortest path tree set
+  //4. lengths of the paths
+  //5. more temporary vectors used - connected path, etc.
+  vector < vector < vertex * >> paths;
+  vector < vertex * > newPath;
+  vector < vertex * > sptSet;
+  vector < int > length;
+  vector < vertex * > con;
+  vector < vertex * > c; //temporary vertex used to perform operations
+  //starts dijkstras algorithm - first add the starting vertex into the vectors 
+  c.push_back(start);
+  paths.push_back(c);
+  sptSet.push_back(start);
+  //assign the first distance to be zero
+  length.push_back(0);
+  //set up temporary vertex pointers so operations can be perforned on them easier
+  vertex * current;
+  vertex * next;
+  vertex * previous;
+  //make numbers to store needed values - counting and lengths, etc.
+  int currentLength;
+  int count;
+  int count2;
+  int minimum;
+  bool finished = false;
+  bool found;
+  //calls functions on the next vector - iterates through connected vertexes
+  //set the variables back to the default state each call
+  while (!finished) {
+    found = false;
+    finished = true;
+    count = 0;
+    minimum = std::numeric_limits < int > ::max();
+    for (vector < vertex * > ::iterator it = sptSet.begin(); it != sptSet.end(); ++it) { //goes through the set of vertexes
+      count++;
+      current = ( * it);
+      currentLength = length.at(count - 1);
+      con = current - > edges;
+      count2 = 0;
+      if (!con.empty()) { //if there are more vertexes, check them
+        finished = false;
+        //finds the one with smallest weight
+        for (vector < vertex * > ::iterator it2 = con.begin(); it2 != con.end(); ++it2) {
+          count2++;
+          if (!contains(sptSet, ( * it2))) {
+            //adds to the SPTset
+            if ((currentLength + current - > weight.at(count2 - 1)) < minimum) {
+              minimum = currentLength + current - > weight.at(count2 - 1);
+              next = ( * it2);
+              previous = current;
+              found = true;
+            }
+          }
+        }
+      }
+    }
+    //print out the result
+    //
+    if (finished || !found) {
+      cout << "There is no path between the vertices." << endl;
+      return;
+    }
+    for (vector < vector < vertex * >> ::iterator it = paths.begin(); it != paths.end(); ++it) {
+      //goes through values and sets them again
+      c = ( * it);
+      if (c.back() == previous) {
+        newPath = ( * it);
+        newPath.push_back(next);
+        paths.push_back(newPath);
+        length.push_back(minimum);
+        sptSet.push_back(next);
+        break;
+      }
+    }
+    if (next == end) { //since the last node is found, then print out the route and length to it!
+      cout << "\nShortest path: ";
+      for (vector < vertex * > ::iterator it = newPath.begin(); it != newPath.end(); ++it) {
+        cout << ( * it) - > name << " ";
+      }
+      //cout << endl;
+      //cout << "Total weight: " << minimum << endl;
+      return;
+    }
+  }
+}
+
+void print(vector < vertex * > v) {
+	//prints a row of the things in the vertex
+  for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
+    cout << "      " << ( * it) - > name;
+  }
+  //checks if it is connected and print if it is or not
+  for (vector < vertex * > ::iterator it = v.begin(); it != v.end(); ++it) {
+    cout << endl;
+    cout << ( * it) - > name;
+    vector < vertex * > connect = ( * it) - > edges;
+    vector < int > length = ( * it) - > weight;
+    //see if connected and print or not
+    for (vector < vertex * > ::iterator ite = v.begin(); ite != v.end(); ++ite) {
+      int count = 0;
+      bool found = false;
+      if (connect.empty()) {
+        
+        cout << "      " << "0";
+      } else {
+        for (vector < vertex * > ::iterator iter = connect.begin(); iter != connect.end(); ++iter) {
+          count++;
+          if (( * iter) - > name == ( * ite) - > name) {
+            //print out 1 if there is an edge
+            cout << "      1";
+            found = true;
+          }
+        }
+        if (!found) {
+          cout << "      " << "0";
+        }
+      }
+    }
+  }
+  cout << endl;
 
 }
