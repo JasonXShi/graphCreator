@@ -161,14 +161,17 @@ void removeVertex(vector < vertex * > & AM, char * name) {
       AM.erase(it);
       break;
     }
+    }
     //deletes any edges to temp
     for (vector < vertex * > ::iterator it = AM.begin(); it != AM.end(); ++it) {
       vector < vertex * > vEdges = ( * it) -> edges;
       vector < int > vWeight = ( * it) -> weight;
       int count = 0;
+      cout << (*it)->name << ", ";
       //this is pretty much removeEdge method of removing edges
       for (vector < vertex * > ::iterator it2 = vEdges.begin(); it2 != vEdges.end(); ++it2) {
         count++;
+	cout << (*it2)->name;
         if (( * it2) == temp) {
           vEdges.erase(it2);
           vWeight.erase(vWeight.begin() + (count - 1));
@@ -179,7 +182,7 @@ void removeVertex(vector < vertex * > & AM, char * name) {
       }
     }
 
-  }
+  
 }
 void removeEdge(vector < vertex * > &AM, char * first, char * second) {
     //makes sure that the vertexes exist and find the vertex pointers corresponding to the names
@@ -298,7 +301,8 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
     }
     //check to make sure all vertices exist in AM
     for(vector<vertex*>::iterator it = newPath.begin(); it!=newPath.end(); ++it){
-    	bool exist = false;
+    	//cout << (*it)->name << endl;
+	    bool exist = false;
 	for(vector<vertex*>::iterator it1 = AM.begin(); it1!=AM.end(); ++it1){
 		if(strcmp((*it)->name, (*it1)->name)==0){
 				exist = true;
