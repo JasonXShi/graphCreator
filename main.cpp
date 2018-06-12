@@ -21,7 +21,7 @@ struct vertex {
 };
 //define functions used
 void addEdge(vector < vertex * > AM, char * first, char * second, int weight);
-void removeEdge(vector < vertex * > AM, char * first, char * second);
+void removeEdge(vector < vertex * > &AM, char * first, char * second);
 void removeVertex(vector < vertex * > & AM, char * name);
 void print(vector < vertex * > AM);
 void find(vector < vertex * > AM, vertex * first, vertex * second);
@@ -177,7 +177,7 @@ void removeVertex(vector < vertex * > & AM, char * name) {
 
   }
 }
-void removeEdge(vector < vertex * > AM, char * first, char * second) {
+void removeEdge(vector < vertex * > &AM, char * first, char * second) {
     //makes sure that the vertexes exist and find the vertex pointers corresponding to the names
     vertex * firstV = NULL;
     vertex * secondV = NULL;
