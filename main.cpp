@@ -22,7 +22,7 @@ struct vertex {
 //define functions used
 void addEdge(vector < vertex * > AM, char * first, char * second, int weight);
 void removeEdge(vector < vertex * > &AM, char * first, char * second);
-void removeVertex(vector < vertex * > & AM, char * name);
+void removeVertex(vector < vertex * > &AM, char * name);
 void print(vector < vertex * > AM);
 void find(vector < vertex * > AM, vertex * first, vertex * second);
 
@@ -38,6 +38,7 @@ int main() {
     cout << "Enter av to add a vertex." << endl;
     cout << "Enter rv to remove a vertex." << endl;
     cout << "Enter f to find shortest path." << endl;
+    cout << "Enter q to quit." << endl;
     cout << "> ";
     //gets input for command
     char * input = new char[100];
@@ -120,7 +121,10 @@ int main() {
 
         cout << "\nSome vertexes don't exist. " << endl;
       }
-    } else {
+    }else if(strcmp(input, "q") == 0){
+	   exit(0); 
+    
+  }else {
       cout << endl;
       cout << "Not a valid input." << endl;
     }
@@ -291,6 +295,21 @@ void find(vector < vertex * > AM, vertex * start, vertex * end) {
         sptSet.push_back(next);
         break;
       }
+    }
+    //check to make sure all vertices exist in AM
+    for(vector<vertex*>::iterator it = newPath.begin(); it!=newPath.end(); ++it){
+    	bool exist = false;
+	for(vector<vertex*>::iterator it1 = AM.begin(); it1!=AM.end(); ++it1){
+		if(strcmp((*it)->name, (*it1)->name)==0){
+				exist = true;
+				break;
+		}
+	}
+	if(!exist){
+		cout << "no path found" << endl;
+		return; 
+	}
+    
     }
     if (next == end) { //since the last node is found, then print out the route and length to it!
       cout << "\nShortest path: ";
